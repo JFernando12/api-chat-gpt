@@ -17,6 +17,7 @@ setInterval(async () => {
   await resetSessionChatGpt();
 }, 24 * 60 * 60 * 1000);
 
+// Verifica que chat-gtp este saludable
 setInterval(async () => {
   if (!chatGpt.restarting && !chatGpt.healthy && chatGpt.started) {
     await resetSessionChatGpt();
