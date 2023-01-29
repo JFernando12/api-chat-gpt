@@ -10,7 +10,7 @@ setInterval(() => {
   chatGpt.refreshSession().then(() => {
     console.log(`Session refreshed for account.`);
   });
-}, 30 * 60 * 1000);
+}, 60 * 60 * 1000);
 
 // call `api.resetSession()` every 24 hours to reset the session
 setInterval(async () => {
@@ -19,10 +19,17 @@ setInterval(async () => {
 
 // Verifica que chat-gtp este saludable
 setInterval(async () => {
-  if (!chatGpt.restarting && !chatGpt.healthy && chatGpt.started) {
+  if (
+    !chatGpt.restarting &&
+    !chatGpt.refreshing &&
+    !chatGpt.healthy &&
+    chatGpt.started
+  ) {
     await resetSessionChatGpt();
   } else if (chatGpt.restarting) {
-    console.log('Reinicio de chat-gtp en curso...');
+    console.log('Reinicio de chat-gpt en curso...');
+  } else if (chatGpt.refreshing) {
+    console.log('Refresh de chat-gpt en curso...');
   } else {
     console.log('Chatgpt saludable...');
   }

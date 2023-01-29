@@ -6,10 +6,12 @@ class ChatGpt {
     email: OPENIA_EMAIL,
     password: OPENIA_PASSWORD,
     isGoogleLogin: true,
+    proxyServer: '201.150.118.34:999',
   });
 
   started = false;
   healthy = false;
+  refreshing = false;
   restarting = false;
 
   async initSession() {
@@ -34,9 +36,9 @@ class ChatGpt {
   }
 
   async refreshSession() {
-    this.restarting = true;
+    this.refreshing = true;
     await this.api.refreshSession();
-    this.restarting = false;
+    this.refreshing = false;
   }
 
   async closeSession() {
