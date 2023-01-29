@@ -1,5 +1,5 @@
 import Express from 'express';
-import { chatGpt } from './ChatGpt.js';
+import { chatGpt, resetSessionChatGpt } from './ChatGpt.js';
 
 const app = Express();
 
@@ -18,16 +18,22 @@ app.post('/ask', async (req, res) => {
     //   "parentMessageId": "your-parent-message-id (optional)"
     // }
     const { message, conversationId, parentMessageId } = req.body;
-    const result = await chatGpt.sendMessage(
-      message,
-      conversationId,
-      parentMessageId
-    );
-    console.log(result);
 
-    res.send(result);
+    if (chatGpt.healthy) {
+      const result = await chatGpt.sendMessage(
+        message,
+        conversationId,
+        parentMessageId
+      );
+
+      console.log(result);
+      res.send(result);
+    } else {
+      res.send('Chat-gpt se está reiniciando...');
+    }
   } catch (error) {
     console.log(error);
+    chatGpt.healthy = false;
     res.send('Something was wrong');
   }
 });

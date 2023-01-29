@@ -7,11 +7,16 @@ class ChatGpt {
     password: OPENIA_PASSWORD,
     isGoogleLogin: true,
     debug: false,
-    minimize: true,
+    minimize: false,
   });
+
+  healthy = false;
+  restarting = false;
 
   async initSession() {
     await this.api.initSession();
+    console.log('Se inicio sesion en chat-gpt');
+    this.healthy = true;
   }
 
   async closeSession() {
@@ -29,7 +34,9 @@ class ChatGpt {
   }
 
   async refreshSession() {
+    this.restarting = true;
     await this.api.refreshSession();
+    this.restarting = false;
   }
 
   async closeSession() {
@@ -40,6 +47,9 @@ class ChatGpt {
 let chatGpt = new ChatGpt();
 
 const resetSessionChatGpt = async () => {
+  // Se pone flag para indicar que está en mantenimiento
+  chatGpt.restarting = true;
+
   await chatGpt.closeSession();
   console.log('Cerrando sesion');
 
@@ -52,15 +62,16 @@ const resetSessionChatGpt = async () => {
   while (i < 5) {
     try {
       console.log('Creando nueva sesion');
-
       await chatGpt.initSession();
-      console.log('Se inicio sesion en chat-gpt');
       i = 5;
     } catch (error) {
+      chatGpt.healthy = false;
       console.log(error);
       i++;
     }
   }
+
+  chatGpt.restarting = false;
 };
 
 export { chatGpt, resetSessionChatGpt };
