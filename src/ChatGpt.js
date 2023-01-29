@@ -6,16 +6,16 @@ class ChatGpt {
     email: OPENIA_EMAIL,
     password: OPENIA_PASSWORD,
     isGoogleLogin: true,
-    debug: false,
-    minimize: false,
   });
 
+  started = false;
   healthy = false;
   restarting = false;
 
   async initSession() {
     await this.api.initSession();
     console.log('Se inicio sesion en chat-gpt');
+    this.started = true;
     this.healthy = true;
   }
 

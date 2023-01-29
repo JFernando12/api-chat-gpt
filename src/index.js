@@ -18,14 +18,14 @@ setInterval(async () => {
 }, 24 * 60 * 60 * 1000);
 
 setInterval(async () => {
-  if (!chatGpt.restarting && !chatGpt.healthy) {
+  if (!chatGpt.restarting && !chatGpt.healthy && chatGpt.started) {
     await resetSessionChatGpt();
   } else if (chatGpt.restarting) {
     console.log('Reinicio de chat-gtp en curso...');
   } else {
     console.log('Chatgpt saludable...');
   }
-}, 5 * 1000);
+}, 10 * 1000);
 
 app.listen(3000, () => {
   console.log('Server on port 3000');
