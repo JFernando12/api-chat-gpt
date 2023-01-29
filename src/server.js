@@ -29,7 +29,7 @@ app.post('/ask', async (req, res) => {
       console.log(result);
       res.send(result);
     } else {
-      res.send('Chat-gpt se está reiniciando...');
+      res.send('Chat-gpt está en mantenimiento, intenta más tarde');
     }
   } catch (error) {
     console.log(error);

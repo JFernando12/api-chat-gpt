@@ -48,10 +48,11 @@ let chatGpt = new ChatGpt();
 
 const resetSessionChatGpt = async () => {
   // Se pone flag para indicar que está en mantenimiento
+  console.log('Reiniciando chat-gpt...');
   chatGpt.restarting = true;
 
-  await chatGpt.closeSession();
   console.log('Cerrando sesion');
+  await chatGpt.closeSession();
 
   // Se crea nueva instancia de la clase para borra todos los cookies Session y evitar errores.
   chatGpt = new ChatGpt();
